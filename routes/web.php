@@ -57,3 +57,40 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/settings', [SettingController::class, 'index'])->name('settings');
     });
 });
+
+/*
+|--------------------------------------------------------------------------
+| Temporary Deployment Utility
+|--------------------------------------------------------------------------
+*/
+use Illuminate\Support\Facades\Artisan;
+Route::get('/install', function (\Illuminate\Http\Request $request) {
+    // SECURITY KEY: Use this once and then remove this route block
+    $secureKey = 'blacksheep_deploy_2026_init';
+    
+    if ($request->query('key') !== $secureKey) {
+        abort(403, 'Unauthorized Access: Invalid Alchemist Cipher.');
+    }
+
+    try {
+        // 1. Run Migrations
+        Artisan::call('migrate', ['--force' => true]);
+        $output = Artisan::output();
+
+        // 2. Run Seeders
+        Artisan::call('db:seed', ['--class' => 'AdminUserSeeder', '--force' => true]);
+        $output .= "\nAdminUserSeeder: " . Artisan::output();
+        
+        Artisan::call('db:seed', ['--class' => 'EventTypeSeeder', '--force' => true]);
+        $output .= "\nEventTypeSeeder: " . Artisan::output();
+        
+        return response()->view('welcome', [
+            'raw_output' => $output, 
+            'message' => 'The Sanctum structure has been stabilized. All systems are online.'
+        ])->header('Content-Type', 'text/plain');
+
+    } catch (\Exception $e) {
+        return response('Stabilization Failure: ' . $e->getMessage(), 500)
+            ->header('Content-Type', 'text/plain');
+    }
+});

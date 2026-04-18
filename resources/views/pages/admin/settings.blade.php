@@ -51,6 +51,18 @@
             </div>
         </section>
 
+        <!-- Database Maintenance Section -->
+        <section>
+            <h3 class="text-xs uppercase tracking-widest text-primary font-label font-bold mb-8 border-b border-white/5 pb-2">Database Maintenance</h3>
+            <div class="p-6 rounded-xl bg-surface-container-highest/20 border border-white/5">
+                <p class="text-sm text-slate-400 mb-6 italic leading-relaxed">Execute structural updates and seed core datasets. Use with caution during peak nocturnal hours.</p>
+                <button type="button" class="px-6 py-3 rounded-lg border border-primary/30 text-primary font-bold hover:bg-primary/10 transition-all flex items-center gap-2 group cursor-not-allowed opacity-50">
+                    <span class="material-symbols-outlined text-lg group-hover:rotate-180 transition-transform duration-500">sync</span>
+                    Run Database Updates
+                </button>
+            </div>
+        </section>
+
         <div class="flex justify-end pt-8">
             <button type="submit" class="px-10 py-4 rounded-xl gold-gradient text-on-primary-fixed font-bold shadow-lg shadow-primary/20 hover:scale-[0.98] transition-all">Apply Configuration</button>
         </div>
