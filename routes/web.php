@@ -84,10 +84,10 @@ Route::get('/install', function (\Illuminate\Http\Request $request) {
         Artisan::call('db:seed', ['--class' => 'EventTypeSeeder', '--force' => true]);
         $output .= "\nEventTypeSeeder: " . Artisan::output();
         
-        return response()->view('welcome', [
+        return view('maintenance.success', [
             'raw_output' => $output, 
             'message' => 'The Sanctum structure has been stabilized. All systems are online.'
-        ])->header('Content-Type', 'text/plain');
+        ]);
 
     } catch (\Exception $e) {
         return response('Stabilization Failure: ' . $e->getMessage(), 500)
