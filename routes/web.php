@@ -79,8 +79,9 @@ Route::get('/install', function (\Illuminate\Http\Request $request) {
     }
 
     try {
-        // 1. Run Migrations
+        // 1. Run Migrations & Storage Link
         Artisan::call('migrate', ['--force' => true]);
+        Artisan::call('storage:link');
         $output = Artisan::output();
 
         // 2. Run Seeders

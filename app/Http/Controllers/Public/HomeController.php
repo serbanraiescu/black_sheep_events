@@ -11,7 +11,7 @@ class HomeController extends Controller
     {
         $content = \App\Models\ContentSection::where('page_name', 'home')
             ->get()
-            ->pluck('content', 'section_key');
+            ->keyBy('section_key');
 
         $eventTypes = \App\Models\EventType::all();
 
