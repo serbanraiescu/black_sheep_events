@@ -32,6 +32,14 @@ Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 |--------------------------------------------------------------------------
 */
 Route::prefix('admin')->name('admin.')->group(function () {
+    // Entry Point Redirector
+    Route::get('/', function () {
+        if (auth()->check() && auth()->user()->is_admin) {
+            return redirect()->route('admin.dashboard');
+        }
+        return redirect()->route('admin.login');
+    });
+
     // Guest Routes
     Route::middleware('guest')->group(function () {
         Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -42,8 +50,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware(['auth', 'admin'])->group(function () {
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         
-        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-        Route::get('/dashboard', [DashboardController::class, 'index']); // Alias
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         
         Route::get('/content', [ContentController::class, 'index'])->name('content');
         Route::get('/bookings', [AdminBookingController::class, 'index'])->name('bookings');
