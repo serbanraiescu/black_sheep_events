@@ -2,17 +2,43 @@
 
 This is the Laravel 12 foundation for Black Sheep Events, prepared for custom UI integration from Google Stitch.
 
-## Deployment on cPanel (Shared Hosting)
+## cPanel Deployment (Shared Hosting)
 
-1. **Core Files**: Upload all project files to a folder *outside* your `public_html` (e.g., `/home/user/black_sheep_core`).
-2. **Public Assets**: Move the contents of the `public/` directory into your `public_html` folder.
-3. **Configuration**: Edit `public_html/index.php` and update the paths to point to your core folder:
-   ```php
-   require __DIR__.'/../black_sheep_core/vendor/autoload.php';
-   $app = require_once __DIR__.'/../black_sheep_core/bootstrap/app.php';
-   ```
-4. **Environment**: Ensure your `.env` file is in the core folder and configured with your production database credentials.
-5. **Permissions**: Ensure `storage` and `bootstrap/cache` are writable by the server.
+This project is configured for a specific cPanel structure where the Laravel core remains isolated from the public web root for security.
+
+### 🏠 Environment Structure
+- **Laravel Core**: `/home/dyxpkare/black_sheep_events`
+- **Public Web Root**: `/home/dyxpkare/public_html`
+
+### 🚀 Deployment Steps
+
+1.  **Code Upload**:
+    - Pull or upload the entire project into `/home/dyxpkare/black_sheep_events`.
+    - Ensure the `vendor` folder is present (run `composer install` locally if needed before upload).
+
+2.  **Public Entrance**:
+    - Copy all files and folders from `/home/dyxpkare/black_sheep_events/public/` directly into `/home/dyxpkare/public_html/`.
+    - **Crucial**: This includes the `build` folder (compiled assets) and the `.htaccess` file.
+
+3.  **Path Verification**:
+    - Open `/home/dyxpkare/public_html/index.php`.
+    - It is already pre-configured to point to the core folder, but verify these lines:
+      ```php
+      require __DIR__.'/../black_sheep_events/vendor/autoload.php';
+      $app = require_once __DIR__.'/../black_sheep_events/bootstrap/app.php';
+      ```
+
+4.  **Configuration**:
+    - Create or update `/home/dyxpkare/black_sheep_events/.env` with your production database credentials.
+    - Set `APP_URL=https://your-domain.ro` to ensure assets load correctly.
+
+5.  **Permissions**:
+    - The following directories in the core folder must be writable by the web server:
+      - `storage/`
+      - `bootstrap/cache/`
+
+6.  **Storage Link (Manual)**:
+    - Since you may not have SSH access, create a symlink named `storage` inside `public_html` that points to `/home/dyxpkare/black_sheep_events/storage/app/public`.
 
 ## Local Development
 
