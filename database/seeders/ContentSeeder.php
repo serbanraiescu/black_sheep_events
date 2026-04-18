@@ -80,7 +80,10 @@ class ContentSeeder extends Seeder
         foreach ($sections as $section) {
             ContentSection::updateOrCreate(
                 ['page_name' => $section['page_name'], 'section_key' => $section['section_key']],
-                ['content' => $section['content']]
+                [
+                    'content' => $section['content'],
+                    'image_path' => $section['image_path'] ?? null
+                ]
             );
         }
     }
