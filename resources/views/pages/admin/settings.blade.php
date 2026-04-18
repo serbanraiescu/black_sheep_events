@@ -55,11 +55,29 @@
         <section>
             <h3 class="text-xs uppercase tracking-widest text-primary font-label font-bold mb-8 border-b border-white/5 pb-2">Database Maintenance</h3>
             <div class="p-6 rounded-xl bg-surface-container-highest/20 border border-white/5">
+                @if(session('success'))
+                    <div class="mb-6 p-4 rounded-xl bg-primary/10 border border-primary/20 text-primary flex items-center gap-3 text-sm">
+                        <span class="material-symbols-outlined">verified</span>
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 flex items-center gap-3 text-sm">
+                        <span class="material-symbols-outlined">error</span>
+                        {{ session('error') }}
+                    </div>
+                @endif
+
                 <p class="text-sm text-slate-400 mb-6 italic leading-relaxed">Execute structural updates and seed core datasets. Use with caution during peak nocturnal hours.</p>
-                <button type="button" class="px-6 py-3 rounded-lg border border-primary/30 text-primary font-bold hover:bg-primary/10 transition-all flex items-center gap-2 group cursor-not-allowed opacity-50">
-                    <span class="material-symbols-outlined text-lg group-hover:rotate-180 transition-transform duration-500">sync</span>
-                    Run Database Updates
-                </button>
+                
+                <form action="{{ route('admin.maintenance.update') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="px-6 py-3 rounded-lg border border-primary/30 text-primary font-bold hover:bg-primary/10 transition-all flex items-center gap-2 group">
+                        <span class="material-symbols-outlined text-lg group-hover:rotate-180 transition-transform duration-500">sync</span>
+                        Run Database Updates
+                    </button>
+                </form>
             </div>
         </section>
 

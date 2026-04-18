@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\ContentController;
 use App\Http\Controllers\Admin\AdminBookingController;
 use App\Http\Controllers\Admin\SettingController;
 
+use App\Http\Controllers\Admin\MaintenanceController;
+
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -61,6 +63,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/content', [ContentController::class, 'update'])->name('content.update');
         Route::get('/bookings', [AdminBookingController::class, 'index'])->name('bookings');
         Route::get('/settings', [SettingController::class, 'index'])->name('settings');
+
+        // Maintenance
+        Route::post('/maintenance/update', [MaintenanceController::class, 'runUpdates'])->name('maintenance.update');
     });
 });
 
@@ -69,7 +74,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
 | Temporary Deployment Utility
 |--------------------------------------------------------------------------
 */
-use Illuminate\Support\Facades\Artisan;
 Route::get('/install', function (\Illuminate\Http\Request $request) {
     // SECURITY KEY: Use this once and then remove this route block
     $secureKey = 'blacksheep_deploy_2026_init';
@@ -78,29 +82,5 @@ Route::get('/install', function (\Illuminate\Http\Request $request) {
         abort(403, 'Unauthorized Access: Invalid Alchemist Cipher.');
     }
 
-    try {
-        // 1. Run Migrations & Storage Link
-        Artisan::call('migrate', ['--force' => true]);
-        Artisan::call('storage:link');
-        $output = Artisan::output();
-
-        // 2. Run Seeders
-        Artisan::call('db:seed', ['--class' => 'AdminUserSeeder', '--force' => true]);
-        $output .= "\nAdminUserSeeder: " . Artisan::output();
-        
-        Artisan::call('db:seed', ['--class' => 'EventTypeSeeder', '--force' => true]);
-        $output .= "\nEventTypeSeeder: " . Artisan::output();
-
-        Artisan::call('db:seed', ['--class' => 'ContentSeeder', '--force' => true]);
-        $output .= "\nContentSeeder: " . Artisan::output();
-        
-        return view('maintenance.success', [
-            'raw_output' => $output, 
-            'message' => 'The Sanctum structure has been stabilized. All systems are online.'
-        ]);
-
-    } catch (\Exception $e) {
-        return response('Stabilization Failure: ' . $e->getMessage(), 500)
-            ->header('Content-Type', 'text/plain');
-    }
+    return app(MaintenanceController::class)->runUpdates($request);
 });
