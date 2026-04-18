@@ -23,10 +23,10 @@ class EventTypeSeeder extends Seeder
         ];
 
         foreach ($types as $type) {
-            \App\Models\EventType::create([
-                'name' => $type,
-                'slug' => \Illuminate\Support\Str::slug($type),
-            ]);
+            \App\Models\EventType::updateOrCreate(
+                ['slug' => \Illuminate\Support\Str::slug($type)],
+                ['name' => $type]
+            );
         }
     }
 }

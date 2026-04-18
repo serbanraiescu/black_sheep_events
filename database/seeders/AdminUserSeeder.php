@@ -12,11 +12,13 @@ class AdminUserSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\User::create([
-            'name' => 'Admin Black Sheep',
-            'email' => 'admin@blacksheepevents.ro',
-            'password' => bcrypt('OaiaMircea26!'),
-            'is_admin' => true,
-        ]);
+        \App\Models\User::updateOrCreate(
+            ['email' => 'admin@blacksheepevents.ro'],
+            [
+                'name' => 'Admin Black Sheep',
+                'password' => bcrypt('OaiaMircea26!'),
+                'is_admin' => true,
+            ]
+        );
     }
 }
