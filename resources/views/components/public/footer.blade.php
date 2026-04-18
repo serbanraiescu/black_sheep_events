@@ -32,8 +32,9 @@
         <div>
             <h4 class="text-primary font-bold mb-6">Legal</h4>
             <ul class="space-y-4 text-sm text-slate-400">
-                <li><a class="hover:text-amber-200 transition-all" href="#">Privacy Policy</a></li>
-                <li><a class="hover:text-amber-200 transition-all" href="#">Terms of Service</a></li>
+                <li><a class="hover:text-amber-200 transition-all" href="{{ route('legal.privacy') }}">Privacy Policy</a></li>
+                <li><a class="hover:text-amber-200 transition-all" href="{{ route('legal.terms') }}">Terms of Service</a></li>
+                <li><a class="hover:text-amber-200 transition-all" href="{{ route('legal.cookies') }}">Cookie Policy</a></li>
                 <li><a class="hover:text-amber-200 transition-all" href="{{ route('contact') }}">Contact Us</a></li>
             </ul>
         </div>

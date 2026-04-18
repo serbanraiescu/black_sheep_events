@@ -26,6 +26,11 @@ Route::get('/booking', [BookingController::class, 'index'])->name('booking.index
 Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
+// Legal Routes
+Route::get('/terms', fn() => view('pages.public.legal.terms'))->name('legal.terms');
+Route::get('/privacy', fn() => view('pages.public.legal.privacy'))->name('legal.privacy');
+Route::get('/cookies', fn() => view('pages.public.legal.cookies'))->name('legal.cookies');
+
 /*
 |--------------------------------------------------------------------------
 | Admin Routes
@@ -53,6 +58,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         
         Route::get('/content', [ContentController::class, 'index'])->name('content');
+        Route::post('/content', [ContentController::class, 'update'])->name('content.update');
         Route::get('/bookings', [AdminBookingController::class, 'index'])->name('bookings');
         Route::get('/settings', [SettingController::class, 'index'])->name('settings');
     });
@@ -83,6 +89,9 @@ Route::get('/install', function (\Illuminate\Http\Request $request) {
         
         Artisan::call('db:seed', ['--class' => 'EventTypeSeeder', '--force' => true]);
         $output .= "\nEventTypeSeeder: " . Artisan::output();
+
+        Artisan::call('db:seed', ['--class' => 'ContentSeeder', '--force' => true]);
+        $output .= "\nContentSeeder: " . Artisan::output();
         
         return view('maintenance.success', [
             'raw_output' => $output, 

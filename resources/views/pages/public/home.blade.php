@@ -9,12 +9,12 @@
     </div>
     <div class="relative z-10 max-w-7xl mx-auto px-8 w-full">
         <div class="max-w-3xl">
-            <span class="inline-block text-xs text-primary tracking-[0.2em] mb-4 font-bold uppercase font-label">The Curated After-Hours</span>
+            <span class="inline-block text-xs text-primary tracking-[0.2em] mb-4 font-bold uppercase font-label">{{ $content['hero_label'] ?? 'The Curated After-Hours' }}</span>
             <h1 class="text-6xl md:text-8xl font-bold mb-6 text-on-surface tracking-tight leading-none italic serif-font">
-                Premium Mobile Bar Experience for Your Event
+                {{ $content['hero_title'] ?? 'Premium Mobile Bar Experience for Your Event' }}
             </h1>
             <p class="text-xl md:text-2xl text-on-surface-variant mb-10 leading-relaxed max-w-2xl">
-                Cocktails. Atmosphere. Unforgettable moments. We bring the speakeasy soul to your most cherished celebrations.
+                {{ $content['hero_description'] ?? 'Cocktails. Atmosphere. Unforgettable moments. We bring the speakeasy soul to your most cherished celebrations.' }}
             </p>
             <div class="flex flex-wrap gap-4">
                 <button class="gold-gradient text-on-primary-fixed px-8 py-4 rounded-xl text-lg font-bold hover:scale-95 transition-all flex items-center gap-2">
@@ -33,8 +33,8 @@
 <section class="py-24 px-8 max-w-7xl mx-auto">
     <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
         <div class="max-w-2xl">
-            <h2 class="text-4xl md:text-5xl font-bold mb-6 text-primary">Artisanal Occasions</h2>
-            <p class="text-on-surface-variant text-lg">Beyond a bar, we provide a narrative. Every pour is a performance, every setup is a centerpiece.</p>
+            <h2 class="text-4xl md:text-5xl font-bold mb-6 text-primary">{{ $content['services_title'] ?? 'Artisanal Occasions' }}</h2>
+            <p class="text-on-surface-variant text-lg">{{ $content['services_description'] ?? 'Beyond a bar, we provide a narrative. Every pour is a performance, every setup is a centerpiece.' }}</p>
         </div>
         <div class="hidden md:block h-[1px] flex-grow mx-12 bg-outline-variant/20"></div>
     </div>
@@ -128,7 +128,7 @@
 
 <!-- Gallery Section -->
 <section class="py-24 px-8 max-w-7xl mx-auto">
-    <h2 class="text-4xl font-bold mb-12 text-center serif-font">Visual Narrative</h2>
+    <h2 class="text-4xl font-bold mb-12 text-center serif-font">{{ $content['vibe_title'] ?? 'Visual Narrative' }}</h2>
     <div class="columns-1 md:columns-3 gap-6 space-y-6">
         <div class="relative overflow-hidden rounded-xl group cursor-pointer">
             <img class="w-full transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzJkddflFWYpiGtNyoRDyBVFos3oEO2v1QKPOtVo-0FwybO0cWSEZbmQv25GsN-RG8XAleM3aII5WFdCfUC90hbc0Fw5ZVxEmE_2mWwzt5g1gt8Iczyfpw97k9r9g0TL8V0EcOq9fm-B_2PTGd1rIdbIowLWjt-DQcRq9JNSzgLtHD4xnzhZmF5A3EPrNpoEdLVJEq4Y3LxMHJW-Cu-w_11y6Q9aP3dYbaIb626Fpk4A37XXb59Dzi8orkNg_kUYoNhZvb_i7TPqQ" alt="Cocktail 1">
@@ -150,41 +150,61 @@
     <div class="bg-surface-container-high rounded-3xl p-12 relative overflow-hidden shadow-2xl">
         <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-primary/5 rounded-full blur-[100px]"></div>
         <div class="relative z-10">
-            <h2 class="text-4xl font-bold mb-4 text-center serif-font">Reserve Your Date</h2>
-            <p class="text-on-surface-variant text-center mb-10">Tell us about your event and we'll craft a personalized offer within 24 hours.</p>
+            <h2 class="text-4xl font-bold mb-4 text-center serif-font">{{ $content['booking_title'] ?? 'Reserve Your Date' }}</h2>
+            <p class="text-on-surface-variant text-center mb-10">{{ $content['booking_description'] ?? "Tell us about your event and we'll craft a personalized offer within 24 hours." }}</p>
+            @if(session('success'))
+                <div class="mb-8 p-6 rounded-2xl bg-primary/10 border border-primary/20 text-primary text-center">
+                    <span class="material-symbols-outlined block text-4xl mb-2">check_circle</span>
+                    {{ session('success') }}
+                </div>
+            @endif
+
             <form action="{{ route('booking.store') }}" method="POST" class="space-y-6">
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label class="block text-sm font-semibold mb-2 text-on-surface-variant">Your Name</label>
-                        <input name="client_name" class="w-full bg-surface-container-lowest border border-white/5 rounded-xl px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-slate-700" placeholder="John Doe" type="text" required/>
+                        <input name="client_name" class="w-full bg-surface-container-lowest border border-white/5 rounded-xl px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-slate-700 font-medium" placeholder="John Doe" type="text" required/>
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold mb-2 text-on-surface-variant">Phone Number</label>
-                        <input name="client_phone" class="w-full bg-surface-container-lowest border border-white/5 rounded-xl px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-slate-700" placeholder="+1 (555) 000-0000" type="tel"/>
+                        <label class="block text-sm font-semibold mb-2 text-on-surface-variant">Email Address</label>
+                        <input name="client_email" class="w-full bg-surface-container-lowest border border-white/5 rounded-xl px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-slate-700 font-medium" placeholder="john@example.com" type="email" required/>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="md:col-span-1">
-                        <label class="block text-sm font-semibold mb-2 text-on-surface-variant">Event Type</label>
-                        <select name="event_type" class="w-full bg-surface-container-lowest border border-white/5 rounded-xl px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
-                            <option>Wedding</option>
-                            <option>Corporate</option>
-                            <option>Private Party</option>
-                            <option>Festival</option>
-                        </select>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold mb-2 text-on-surface-variant">Phone Number</label>
+                        <input name="client_phone" class="w-full bg-surface-container-lowest border border-white/5 rounded-xl px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-slate-700 font-medium" placeholder="+40 7xx xxx xxx" type="tel"/>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold mb-2 text-on-surface-variant">Event Date</label>
-                        <input name="event_date" class="w-full bg-surface-container-lowest border border-white/5 rounded-xl px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" type="date" required/>
+                        <input name="event_date" class="w-full bg-surface-container-lowest border border-white/5 rounded-xl px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-medium" type="date" required/>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold mb-2 text-on-surface-variant">Event Type</label>
+                        <select name="event_type_id" class="w-full bg-surface-container-lowest border border-white/5 rounded-xl px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-medium text-slate-300">
+                            @foreach($eventTypes as $type)
+                                <option value="{{ $type->id }}">{{ $type->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold mb-2 text-on-surface-variant">Estimated Guests</label>
-                        <input name="guest_count" class="w-full bg-surface-container-lowest border border-white/5 rounded-xl px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-slate-700" placeholder="e.g. 150" type="number"/>
+                        <input name="guest_count" class="w-full bg-surface-container-lowest border border-white/5 rounded-xl px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-slate-700 font-medium" placeholder="e.g. 150" type="number"/>
                     </div>
                 </div>
-                <button class="w-full gold-gradient text-on-primary-fixed py-4 rounded-xl text-lg font-bold hover:scale-[0.99] transition-all shadow-lg shadow-primary/20" type="submit">
-                    Get a Personalized Offer
+
+                <div>
+                    <label class="block text-sm font-semibold mb-2 text-on-surface-variant">Additional Vision / Details</label>
+                    <textarea name="message" rows="4" class="w-full bg-surface-container-lowest border border-white/5 rounded-xl px-4 py-3 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-slate-700 font-medium" placeholder="Describe the atmosphere you want to create..."></textarea>
+                </div>
+
+                <button class="w-full gold-gradient text-on-primary-fixed py-5 rounded-xl text-lg font-bold hover:scale-[0.99] transition-all shadow-lg shadow-primary/20 mt-4" type="submit">
+                    Request Custom Offer
                 </button>
             </form>
         </div>
